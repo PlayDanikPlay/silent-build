@@ -15,6 +15,9 @@ jobs:
         run: |
           mkdir -p so2_backtrack/third_party
           git clone --depth 1 https://github.com/jmpews/Dobby.git so2_backtrack/third_party/Dobby
+          # Исправляем проблему с путями внутри Dobby на лету перед сборкой
+          echo "include_directories(\${CMAKE_CURRENT_SOURCE_DIR}/source)" >> so2_backtrack/third_party/Dobby/CMakeLists.txt
+          echo "include_directories(\${CMAKE_CURRENT_SOURCE_DIR}/source/core/arch)" >> so2_backtrack/third_party/Dobby/CMakeLists.txt
 
       - name: Setup Android NDK
         uses: nttld/setup-ndk@v1.6.0
