@@ -11,18 +11,23 @@ set(DOBBY_BUILD_EXAMPLE OFF CACHE BOOL "" FORCE)
 set(DOBBY_BUILD_TEST OFF CACHE BOOL "" FORCE)
 set(DOBBY_DEBUG OFF CACHE BOOL "" FORCE)
 
+# Подключаем Dobby
 add_subdirectory(so2_backtrack/third_party/Dobby dobby_build)
 
 # Сборка вашей библиотеки
 add_library(silent SHARED src/silent.cpp)
 
-# Добавляем все необходимые пути к заголовочным файлам Dobby
+# Указываем пути к заголовкам вашего проекта и внутренним папкам Dobby,
+# чтобы компилятор без проблем находил все файлы вроде Cpu.h
 target_include_directories(silent PRIVATE 
     src 
     so2_backtrack/third_party/Dobby/include
     so2_backtrack/third_party/Dobby/source
+    so2_backtrack/third_party/Dobby/source/core/arch
     so2_backtrack/third_party/Dobby/source/core/arch/arm
 )
 
 target_compile_options(silent PRIVATE -Wall -Wextra -fvisibility=hidden)
+
+# Линкуем статическую библиотеку Dobby и системный лог Android
 target_link_libraries(silent PRIVATE dobby_static log)
